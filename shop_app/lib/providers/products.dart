@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:shop_app/models/http_exceptions.dart';
+import '../models/http_exceptions.dart';
 
 import './product.dart';
 
@@ -143,19 +143,17 @@ class Products with ChangeNotifier {
 //Future<void>랑 async랑 await는 쌍으로 같이 써야..249강 5:43초부터 보기
 
   Future<void> deleteProduct(String id) async {
-    final url = 'https://flt-udm-default-rtdb.firebaseio.com/products/$id';
+    final url = 'https://flutter-update.firebaseio.com/products/$id.json';
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
     var existingProduct = _items[existingProductIndex];
     _items.removeAt(existingProductIndex);
     notifyListeners();
-    // _items.removeWhere((prod) => prod.id == id);
     final response = await http.delete(url);
-
     if (response.statusCode >= 400) {
       _items.insert(existingProductIndex, existingProduct);
+      notifyListeners();
       throw HttpException('Could not delete product.');
     }
-    // print(response.statusCode);
     existingProduct = null;
   }
 }
