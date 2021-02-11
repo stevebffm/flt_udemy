@@ -12,25 +12,17 @@ class OrdersScreen extends StatefulWidget {
 }
 
 class _OrdersScreenState extends State<OrdersScreen> {
-  var _isLoading = false;
+  Future _ordersFuture;
+  Future _obtainOrdersFuture() {
+    return Provider.of<Orders>(context, listen: false).fetchAndSetOrders();
+  }
 
   @override
   void initState() {
-    // Future.delayed(Duration.zero).then((_) async {
-    // _isLoading = true;
-    // //await
-    // Provider.of<Orders>(context, listen: false).fetchAndSetOrders().then((_) {
-    //   setState(() {
-    //     _isLoading = false;
-    //   });
-    // });
-
-    // });
+    _ordersFuture = _obtainOrdersFuture();
     super.initState();
   }
 
-  //254. 8:40초 까지 함. 한 5분전 돌려서 다시 이해하기.. 위에 initState안쓰고 FutureBuilder로 대체해서
-  // ... 로딩창 띄우는 방법 설명하는 부분임, 그리고 컨슈머 뭐였더라?
   @override
   Widget build(BuildContext context) {
     print('building orders');
@@ -41,8 +33,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
       ),
       drawer: AppDrawer(),
       body: FutureBuilder(
-          future:
-              Provider.of<Orders>(context, listen: false).fetchAndSetOrders(),
+          future: _ordersFuture,
           builder: (ctx, dataSnapshot) {
             if (dataSnapshot.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());

@@ -24,11 +24,12 @@ class Product with ChangeNotifier {
     notifyListeners();
   }
 
-  void toggleFavoriteStatus() async {
+  void toggleFavoriteStatus(String token) async {
     final oldStatus = isFavorite;
     isFavorite = !isFavorite;
     notifyListeners();
-    final url = 'https://flt-udm-default-rtdb.firebaseio.com/products/$id.json';
+    final url =
+        'https://flt-udm-default-rtdb.firebaseio.com/products/$id.json?auth=$token';
     try {
       final response = await http.patch(
         url,
