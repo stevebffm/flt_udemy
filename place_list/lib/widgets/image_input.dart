@@ -26,7 +26,7 @@ class _ImageInputState extends State<ImageInput> {
     final appDir = await syspaths.getApplicationDocumentsDirectory();
     final fileName = path.basename(imageFile.path);
     final savedImage = imageFile.copy('${appDir.path}/$fileName');
-    // final appDir = syspaths.imageFile.copy(newPath);
+    //294강 부터 시작
   }
 
   @override
