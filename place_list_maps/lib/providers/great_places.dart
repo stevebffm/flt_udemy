@@ -13,6 +13,10 @@ class GreatPlaces with ChangeNotifier {
     return [..._items];
   }
 
+  Place findById(String id) {
+    return _items.firstWhere((place) => place.id == id);
+  }
+
   Future<void> addPlace(
     String pickedTitle,
     File pickedImage,
@@ -48,15 +52,15 @@ class GreatPlaces with ChangeNotifier {
     _items = dataList
         .map(
           (item) => Place(
-                id: item['id'],
-                title: item['title'],
-                image: File(item['image']),
-                location: PlaceLocation(
-                  latitude: item['loc_lat'],
-                  longitude: item['loc_lng'],
-                  address: item['address'],
-                ),
-              ),
+            id: item['id'],
+            title: item['title'],
+            image: File(item['image']),
+            location: PlaceLocation(
+              latitude: item['loc_lat'],
+              longitude: item['loc_lng'],
+              address: item['address'],
+            ),
+          ),
         )
         .toList();
     notifyListeners();
